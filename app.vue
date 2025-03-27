@@ -60,12 +60,12 @@ const menuOptions = [
     icon: renderIcon(HomeIcon)
   },
   {
-    label: '第一页',
+    label: '摄像头检测',
     key: 'page1',
     icon: renderIcon(Page1Icon)
   },
   {
-    label: '第二页',
+    label: '脑电波分析',
     key: 'page2',
     icon: renderIcon(Page2Icon)
   }

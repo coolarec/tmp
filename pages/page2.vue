@@ -333,7 +333,7 @@ const fetchEEGData = async () => {
 
 // 使用 ResizeObserver 处理图表大小调整
 let resizeObserver: ResizeObserver | null = null
-
+let timer: NodeJS.Timeout | null = null;
 onMounted(() => {
   initBrainwaveChart()
   initProbChart()
