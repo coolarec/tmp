@@ -23,7 +23,9 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.13.2",
     "naive-ui": "^2.41.0",
+    "unplugin-vue-components": "^28.4.1",
     "vfonts": "^0.0.3"
   }
 }

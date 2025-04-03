@@ -11,26 +11,31 @@ export default defineNuxtConfig({
       'echarts'
     ]
   },
-  nitro: {
-    prerender: {
-      crawlLinks: false
+  modules: [
+    'unplugin-vue-components/nuxt'
+  ],
+  components: true,
+  plugins: [
+    '~/plugins/naive-ui.ts'
+  ],
+  runtimeConfig: {
+    public: {
+      apiRefreshInterval: 5000
     }
   },
   vite: {
     optimizeDeps: {
-      include: ['naive-ui', 'echarts']
+      include: ['naive-ui', 'echarts', '@vicons/ionicons5']
     },
-    build: {
-      minify: 'terser',
-      cssMinify: true,
-      chunkSizeWarningLimit: 1000,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            echarts: ['echarts'],
-          }
-        }
+    server: {
+      hmr: {
+        overlay: false
       }
+    }
+  },
+  nitro: {
+    prerender: {
+      crawlLinks: false
     }
   }
 })
