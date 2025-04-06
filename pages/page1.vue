@@ -2,11 +2,13 @@
   <div class="container">
     <!-- 上部分：框架展示 -->
     <div class="frame-section">
-      <n-card>
+      <n-card class="video-card">
         <iframe 
-          src="https://scoreboard.ucup.ac/" 
+          src="http://127.0.0.1:5000/video" 
           frameborder="0" 
           class="frame-content"
+          width="960"
+          height="500"
         ></iframe>
       </n-card>
     </div>
@@ -219,7 +221,7 @@ let resizeObserver: ResizeObserver | null = null
 onMounted(() => {
   initChart()
   fetchLatestData()
-  timer = setInterval(fetchLatestData, 5000)
+  timer = setInterval(fetchLatestData, 500)
   
   // 使用 ResizeObserver
   if (chartRef.value) {
@@ -250,14 +252,22 @@ onUnmounted(() => {
 }
 
 .frame-section {
-  height: 40vh;
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.video-card {
+  width: fit-content;
+  height: fit-content;
 }
 
 .frame-content {
-  width: 100%;
-  height: 100%;
   border: none;
+  display: block;
 }
 
 .chart-section {

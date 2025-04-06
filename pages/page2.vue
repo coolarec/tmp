@@ -33,29 +33,29 @@
           <div class="description-block">
             <n-text class="sub-title">【脑电波频段说明】</n-text>
             <n-text class="detail-text">
-              • Theta波 (4-8Hz)：与注意力、记忆和情感处理相关
-              • 低频Alpha波 (8-10Hz)：表示放松状态和基础认知活动
-              • 高频Alpha波 (10-13Hz)：反映高级认知处理和注意力集中
-              • 低频Beta波 (13-20Hz)：与意识清醒和积极思维相关
+              • Theta波 (4-8Hz)：与注意力、记忆和情感处理相关<br>
+              • 低频Alpha波 (8-10Hz)：表示放松状态和基础认知活动<br>
+              • 高频Alpha波 (10-13Hz)：反映高级认知处理和注意力集中<br>
+              • 低频Beta波 (13-20Hz)：与意识清醒和积极思维相关<br>
             </n-text>
           </div>
 
           <div class="description-block">
             <n-text class="sub-title">【评估指标解释】</n-text>
             <n-text class="detail-text">
-              • 自闭症概率：基于脑电波特征计算的自闭症可能性
-              • 正常概率：脑电波模式符合正常范围的概率
-              • MSE损失：模型预测的误差值，越低表示预测越准确
+              • 自闭症概率：基于脑电波特征计算的自闭症可能性<br>
+              • 正常概率：脑电波模式符合正常范围的概率<br>
+              • MSE损失：模型预测的误差值，越低表示预测越准确<br>
             </n-text>
           </div>
 
           <div class="description-block">
             <n-text class="sub-title">【数据解读建议】</n-text>
             <n-text class="detail-text">
-              • 关注各频段波形的相对强度变化
-              • 注意自闭症概率的突变情况
-              • 结合正常概率进行综合评估
-              • 定期观察MSE损失值的稳定性
+              • 关注各频段波形的相对强度变化<br>
+              • 注意自闭症概率的突变情况<br>
+              • 结合正常概率进行综合评估<br>
+              • 定期观察MSE损失值的稳定性<br>
             </n-text>
           </div>
 
@@ -211,7 +211,7 @@ const initProbChart = () => {
       formatter: (params: any) => {
         let result = `${new Date(params[0].value[0]).toLocaleString()}<br/>`
         params.forEach((param: any) => {
-          result += `${param.seriesName}: ${(param.value[1] * 100).toFixed(2)}%<br/>`
+          result += `${param.seriesName}: ${(param.value[1]).toFixed(2)}%<br/>`
         })
         return result
       }
@@ -338,7 +338,7 @@ onMounted(() => {
   initBrainwaveChart()
   initProbChart()
   fetchEEGData()
-  timer = setInterval(fetchEEGData, 5000)
+  timer = setInterval(fetchEEGData, 500)
 
   // 监听容器大小变化
   if (brainwaveChartRef.value && probChartRef.value) {

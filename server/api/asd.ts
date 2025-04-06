@@ -45,8 +45,8 @@ export default defineEventHandler((event) => {
             success: true,
             data: results,
             statistics: {
-              avgAutisticScore: avgScores?.avg_autistic_score ?? 0,
-              avgNonAutisticScore: avgScores?.avg_non_autistic_score ?? 0
+              avgAutisticScore: (avgScores?.avg_autistic_score ?? 0)/100,
+              avgNonAutisticScore: (avgScores?.avg_non_autistic_score ?? 0)/100
             }
           })
         })
