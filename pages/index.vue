@@ -337,8 +337,36 @@ const updateAssessmentAndAdvice = () => {
     return
   }
 
+  // 计算综合评分 (摄像头检测概率*0.5 + 脑电波概率*0.5)
+  const overallScore = (autismProb * 0.5) + (eegNormalProb * 0.5)
+
   const assessmentParts: string[] = []
   const adviceParts: string[] = []
+
+  // 综合评分部分
+  assessmentParts.push('<div class="assessment-section">')
+  assessmentParts.push('<span class="section-label label-behavior">综合评分</span>')
+  assessmentParts.push('<h3>【综合评估】</h3>')
+  assessmentParts.push(`<p>当前综合评分：<strong>${overallScore.toFixed(1)}%</strong></p>`)
+  assessmentParts.push(`<p>• 摄像头检测评分：<strong>${autismProb.toFixed(1)}%</strong></p>`)
+  assessmentParts.push(`<p>• 脑电波分析评分：<strong>${eegNormalProb.toFixed(1)}%</strong></p>`)
+  
+  // 添加综合情况分析
+  assessmentParts.push('<h3>综合情况分析</h3>')
+  if (overallScore >= 80) {
+    assessmentParts.push('<div class="assessment-text">')
+    assessmentParts.push('综合评估显示当前状态良好。行为特征和脑电波指标均处于正常范围，表明整体发展状况稳定。建议继续保持现有的生活学习方式，可以适当增加一些具有挑战性的活动来促进全面发展。')
+    assessmentParts.push('</div>')
+  } else if (overallScore >= 60) {
+    assessmentParts.push('<div class="assessment-text">')
+    assessmentParts.push('综合评估显示当前状态基本正常，但存在一些需要注意的方面。建议关注行为特征和脑电波指标的变化，保持规律的生活作息，适当增加社交互动和认知训练活动。')
+    assessmentParts.push('</div>')
+  } else {
+    assessmentParts.push('<div class="assessment-text">')
+    assessmentParts.push('综合评估显示当前状态需要特别关注。建议及时就医进行专业评估，同时加强日常观察和记录。在家庭环境中，可以采取一些针对性的训练和干预措施，保持积极乐观的心态。')
+    assessmentParts.push('</div>')
+  }
+  assessmentParts.push('</div>')
 
   // ASD 评估部分（加入趋势分析）
   assessmentParts.push('<div class="assessment-section">')
@@ -715,17 +743,19 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  will-change: transform; /* Hardware acceleration */
-  max-width: 1200px;  /* 添加最大宽度 */
-  margin: 0 auto;     /* 水平居中 */
-  width: 100%;        /* 确保占满可用空间 */
+  will-change: transform;
+  max-width: 1400px;  /* 增加最大宽度 */
+  margin: 0 auto;
+  width: 100%;
 }
 
 .upper-section {
   height: 60vh;
   display: flex;
   min-height: 400px;
-  margin-bottom: 20px;
+  width: 100%;
+  max-width: 1400px;  /* 增加最大宽度 */
+  margin: 0 auto 20px auto;
 }
 
 .lower-section {
@@ -733,9 +763,9 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 24px;
   margin-bottom: 30px;
-  max-width: 1000px;     /* 添加最大宽度 */
-  margin-left: auto;     /* 水平居中 */
-  margin-right: auto;    /* 水平居中 */
+  max-width: 1400px;  /* 增加最大宽度 */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .lower-section > .n-card {
@@ -747,18 +777,21 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;  /* 添加水平居中 */
-  width: 100%;         /* 确保宽度占满 */
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;  /* 增加最大宽度 */
+  margin: 0 auto;
 }
 
 .hearts-container {
   display: flex;
-  justify-content: center;  /* 修改为居中对齐 */
+  justify-content: center;
   width: 100%;
-  max-width: 1000px;      /* 添加最大宽度 */
+  max-width: 1400px;  /* 增加最大宽度 */
   height: 100%;
   align-items: center;
-  margin: 0 auto;         /* 水平居中 */
+  margin: 0 auto;
+  gap: 60px;
 }
 
 .heart-section {
@@ -767,7 +800,8 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  max-width: 450px;      /* 限制每个心形区域的最大宽度 */
+  max-width: 500px;  /* 增加心形区域最大宽度 */
+  padding: 0 20px;
 }
 
 .left-heart {
@@ -784,7 +818,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 40px;  /* 增加心形和进度条之间的间距 */
   margin-bottom: 20px;
   height: 220px;
 }
@@ -972,9 +1006,9 @@ onUnmounted(() => {
 
 .page-description {
   margin-bottom: 20px;
-  max-width: 1000px;     /* 添加最大宽度 */
-  margin-left: auto;     /* 水平居中 */
-  margin-right: auto;    /* 水平居中 */
+  max-width: 1400px;  /* 增加最大宽度 */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .description-header {
