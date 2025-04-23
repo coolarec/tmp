@@ -340,6 +340,20 @@ const updateAssessmentAndAdvice = () => {
   const assessmentParts: string[] = []
   const adviceParts: string[] = []
 
+  // 计算综合分数（行为特征分数需要反向计算，因为高分表示异常）
+  const invertedAutismProb = 100 - autismProb  // 反转行为特征分数
+  const compositeScore = Math.round((invertedAutismProb * 0.5) + (eegNormalProb * 0.5))
+  const compositeStatus = compositeScore >= 80 ? '良好' : compositeScore >= 60 ? '正常' : '需要关注'
+
+  // 添加综合分数显示
+  assessmentParts.push('<div class="composite-score">')
+  assessmentParts.push(`<h3>【综合评分】</h3>`)
+  assessmentParts.push(`<div class="score-display">`)
+  assessmentParts.push(`<p>当前综合评分：<strong>${compositeScore}</strong>分</p>`)
+  assessmentParts.push(`<p>状态：<span class="score-status" data-status="${compositeStatus}">${compositeStatus}</span></p>`)
+  assessmentParts.push('</div>')
+  assessmentParts.push('</div>')
+
   // ASD 评估部分（加入趋势分析）
   assessmentParts.push('<div class="assessment-section">')
   assessmentParts.push('<span class="section-label label-behavior">行为特征</span>')
@@ -771,20 +785,22 @@ onUnmounted(() => {
 }
 
 .left-heart {
+  padding-right: 50px;
   justify-content: center;
-  padding-left: 20px;
+  padding-left: 50px;    /* 进一步增加左侧padding */
 }
 
 .right-heart {
+  padding-left: 50px;
   justify-content: center;
-  padding-right: 20px;
+  padding-right: 50px;   /* 进一步增加右侧padding */
 }
 
 .heart-progress-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;            /* 保持心形和进度条之间的间距 */
   margin-bottom: 20px;
   height: 220px;
 }
@@ -1129,5 +1145,76 @@ onUnmounted(() => {
 .assessment-section strong {
   color: #2080f0;
   font-weight: 600;
+}
+
+.composite-score {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.composite-score h3 {
+  color: #333;
+  font-size: 16px;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.score-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-display p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.score-display strong {
+  color: #2080f0;
+  font-weight: 600;
+}
+
+.score-status {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: rgba(32, 128, 240, 0.1);
+  color: #2080f0;
+}
+
+/* 根据分数状态动态改变颜色 */
+.score-status[data-status="良好"] {
+  background-color: rgba(24, 160, 88, 0.1);
+  color: #18a058;
+}
+
+.score-status[data-status="正常"] {
+  background-color: rgba(240, 160, 32, 0.1);
+  color: #f0a020;
+}
+
+.score-status[data-status="需要关注"] {
+  background-color: rgba(208, 48, 80, 0.1);
+  color: #d03050;
+}
+
+/* 添加动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.composite-score {
+  animation: fadeIn 0.3s ease-out;
 }
 </style> 
