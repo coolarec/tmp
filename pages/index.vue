@@ -747,9 +747,6 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 24px;
   margin-bottom: 30px;
-  max-width: 1000px;     /* 添加最大宽度 */
-  margin-left: auto;     /* 水平居中 */
-  margin-right: auto;    /* 水平居中 */
 }
 
 .lower-section > .n-card {
@@ -988,9 +985,6 @@ onUnmounted(() => {
 
 .page-description {
   margin-bottom: 20px;
-  max-width: 1000px;     /* 添加最大宽度 */
-  margin-left: auto;     /* 水平居中 */
-  margin-right: auto;    /* 水平居中 */
 }
 
 .description-header {

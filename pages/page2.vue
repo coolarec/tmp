@@ -10,7 +10,21 @@
           </div>
         </template>
         
-        <div class="charts-container">
+        <div v-if="!cameraConnected" class="error-message">
+          <n-result
+            status="error"
+            title="摄像头未连接"
+            description="请检查设备连接状态并重试"
+          >
+            <template #footer>
+              <n-button type="primary" @click="retryConnection">
+                重试连接
+              </n-button>
+            </template>
+          </n-result>
+        </div>
+        
+        <div v-else class="charts-container">
           <!-- 脑电波频段图表 -->
           <div class="chart-wrapper">
             <div ref="brainwaveChartRef" class="chart"></div>
@@ -111,6 +125,9 @@ const brainwaveChartRef = ref<HTMLElement | null>(null)
 const probChartRef = ref<HTMLElement | null>(null)
 let brainwaveChart: echarts.ECharts | null = null
 let probChart: echarts.ECharts | null = null
+const cameraConnected = ref(true)  // 添加摄像头连接状态
+let timer: NodeJS.Timeout | null = null
+let resizeObserver: ResizeObserver | null = null
 
 // 初始化脑电波频段图表
 const initBrainwaveChart = () => {
@@ -318,27 +335,42 @@ const fetchEEGData = async () => {
   try {
     loading.value = true
     const response = await fetch('/api/eeg?limit=100')
+    if (!response.ok) {
+      cameraConnected.value = false
+      throw new Error('Network response was not ok')
+    }
     const result = await response.json()
     
     if (result.success && result.data) {
       tableData.value = result.data.reverse() // 反转数据使最新的在右边
       updateCharts()
+      cameraConnected.value = true
+    } else {
+      cameraConnected.value = false
     }
   } catch (error) {
     console.error('Error fetching EEG data:', error)
+    cameraConnected.value = false
+    // 停止定时器
+    if (timer) {
+      clearInterval(timer)
+      timer = null
+    }
   } finally {
     loading.value = false
   }
 }
 
-// 使用 ResizeObserver 处理图表大小调整
-let resizeObserver: ResizeObserver | null = null
-let timer: NodeJS.Timeout | null = null;
+// 修改定时器逻辑
 onMounted(() => {
   initBrainwaveChart()
   initProbChart()
   fetchEEGData()
-  timer = setInterval(fetchEEGData, 500)
+  
+  // 只有在摄像头连接成功时才启动定时器
+  if (cameraConnected.value) {
+    timer = setInterval(fetchEEGData, 500)
+  }
 
   // 监听容器大小变化
   if (brainwaveChartRef.value && probChartRef.value) {
@@ -350,6 +382,15 @@ onMounted(() => {
     resizeObserver.observe(probChartRef.value)
   }
 })
+
+// 添加重试连接方法
+const retryConnection = () => {
+  cameraConnected.value = true
+  fetchEEGData()
+  if (!timer) {
+    timer = setInterval(fetchEEGData, 500)
+  }
+}
 
 onUnmounted(() => {
   if (timer) clearInterval(timer)
@@ -458,5 +499,10 @@ onUnmounted(() => {
 .chart {
   width: 100%;
   height: 100%;
+}
+
+.error-message {
+  padding: 40px 0;
+  text-align: center;
 }
 </style> 
